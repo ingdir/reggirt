@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>reggirt test</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script src="jquery.reggirt.js"></script>
+        <style>
+            body {
+                padding: 20px;
+            }
+
+            .c {
+                padding: 20px;
+                border: solid 1px #666;
+                background-color: rgba(127, 127, 0, .2);
+            }
+
+            .c2 {
+                padding: 20px;
+                border: solid 1px #666;
+                background-color: rgba(0, 127, 127, .2);
+            }
+        </style>
+        <script>
+            $(function() {
+                $(document).click(function(e) {
+                    $(e.target).reggirt('.checkbox', 'click', {answer: 42});
+                });
+                
+                $('input').on('click', function(e, data) {
+                    //console.log("I am ", this, " I know the answer! It's ", data.answer);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="c">
+            <input type="checkbox" class="checkbox c1"/>
+            <div class="c">
+                <input type="checkbox" class="checkbox c2"/>
+                <div class="c">
+                    <input type="checkbox" class="checkbox c3"/>
+                    <div class="c">
+                        <input type="checkbox" class="checkbox c4"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="c2">
+            <div class="c2">
+                <input type="checkbox" class="checkbox b1"/>
+                <input type="checkbox" class="checkbox b2"/>
+                <input type="checkbox" class="checkbox b3"/>
+            </div>
+        </div>
+    </body>
+</html>
