@@ -1,11 +1,16 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>reggirt test</title>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="jquery.reggirt.js"></script>
         <style>
             body {
                 padding: 20px;
+            }
+
+            p {
+                background-color: #eee;
             }
 
             .c {
@@ -19,20 +24,67 @@
                 border: solid 1px #666;
                 background-color: rgba(0, 127, 127, .2);
             }
+
+            .stopping {
+                outline: solid 2px red;
+            }
         </style>
         <script>
             $(function() {
+                function sp(e) {
+                    e.stopCapturing = true;
+                }
+
                 $(document).click(function(e) {
-                    $(e.target).reggirt('.checkbox', 'click', {answer: 42});
+                    if (e.ctrlKey) return true;
+                    $(e.target)
+                            .reggirt('.checkbox', 'test', {answer: 42})
+                            .reggirt('test2')
+                            .reggirt('test3', {answer: 100500});
                 });
                 
-                $('input').on('click', function(e, data) {
-                    //console.log("I am ", this, " I know the answer! It's ", data.answer);
+                $('input').on('test', function(e, data) {
+                    data = data || {};
+                    this.checked = !this.checked;
+                    console.log("I am ", this, " I know the answer! It's ", data.answer);
                 });
+
+                $('*').on('test2 test3', function(e, data) {
+                    data = data || {};
+                    console.log(
+                        this,
+                        e.type,
+                        'data: ', data.answer,
+                        'e.capturingOrigin:', e.capturingOrigin,
+                        'e.capturingTarget',  e.capturingTarget);
+                })
+                .on('click', function(e) {
+                    if (e.ctrlKey) {
+                        e.stopPropagation();
+
+                        var $this = $(this);
+                        $this.toggleClass('stopping');
+                        if ($this.hasClass('stopping')) {
+                            console.log(this, ' will prevent capturing for all descendants!');
+                            $this.on('test test2 test3', sp);
+                        } else {
+                            console.log(this, ' will allow capturing for all descendants!');
+                            $this.off('test test2 test3', sp);
+                        }
+                    }
+                });
+
             });
         </script>
     </head>
     <body>
+        <p>
+            Open Firebug or other debugging console to see the debugging output;
+        </p>
+        <p>
+            Use <strong>Crtl + click</strong> to mark containers that prevent event capturing.<br/>
+            Do a <strong>Ctrl + click</strong> once more to remove the capturing handler.
+        </p>
         <div class="c">
             <input type="checkbox" class="checkbox c1"/>
             <div class="c">

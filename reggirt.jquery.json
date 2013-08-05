@@ -1,0 +1,32 @@
+{
+    "name": "reggirt",
+    "title": "jQuery plugin that emulates capturing events behavior",
+    "description": "\".reggirt()\" is \".trigger()\", reversed. You can now trigger events from a top container down to a deep target specified either by a selector or a jQuery collection, for each element in the chain, in the order similar to W3C Events capturing phase but with traditional jQuery event handlers. Prevents events from bubbling back to the top. See docs for complete API.",
+    "keywords": [
+        "trigger",
+        "event",
+        "capturing",
+        "reverse",
+        "resersed",
+        "delegation",
+        "capturing phase"
+    ],
+    "version": "1.1",
+    "author": {
+        "name": "Max Shirshin",
+        "email": "max.shirshin@gmail.com"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/ingdir/jquery-polling-plugin/blob/master/MIT-LICENSE.txt"
+        }
+    ],
+    "homepage": "https://github.com/ingdir/reggirt",
+    "docs": "https://github.com/ingdir/reggirt",
+    "download": "https://github.com/ingdir/reggirt",
+
+    "dependencies": {
+        "jquery": ">=1.7"
+    }
+}

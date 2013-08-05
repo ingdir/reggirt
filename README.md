@@ -3,16 +3,27 @@ reggirt
 
 A jQuery plugin that emulates capturing events behavior: trigger them from top to bottom with .reggirt(), the "trigger" method reversed!
 
-### Usage
+### What Does It Do?
 
 As stated above, "reggirt" is "trigger" reversed.
 You can now trigger event from a top container down to a deep target, for each element in the chain,
-in the order similar to a capturing phase of W3C Events but with traditional jQuery event handlers.
+in the order similar to W3C Events capturing phase but with traditional jQuery event handlers.
 
 During event processing, events are triggered from top container down to a specified selector or jQuery collection.
 Nothing bubbles back, or course; we're doing seriuos business, who needs bubbles?
 
-Example:
+With simplified syntax, you can also trigger event(s) directly on the current jQuery collection; they will not bubble back to the top of a DOM tree.
+
+### Usage
+
+Basic syntax is:
+
+$('some selector').reggirt(
+    'target.selector',  // can also be a jQuery element collection, see below
+    'eventName',
+    {extra: 'event data object', optional: true});
+
+Consider this example (DOM structure + JS code):
 
 ```html
 <div class="root">
@@ -23,35 +34,53 @@ Example:
 ```
 
 ```javascript
-$('div').on('eventName', function() {
-    console.log(this.className);
-});
+// on DOMReady
+$(function() {
+    // create handler with normal jQuery Event API
+    $('div').on('eventName', function() {
+        console.log(this.className);
+    });
 
-$('.root').reggirt('.target', 'eventName');
+    // emulate capturing event
+    $('.root').reggirt('.target', 'eventName');
+});
 ```
 
-will output:
+The code above will output to the console:
 ```
 root
 container
 target
 ```
 
-You can also use jQuery collection (or anything that can be converted into it):
+You can also use jQuery collection as a target (or anything that can be converted into jQuery collection):
 ```javascript
 $('.root').reggirt( $('div.target'), 'eventName');
 ```
-The collection is filtered to allow only elements which are descendants of the root element.
+**IMPORTANT**: the collection is filtered to allow only elements which are descendants of the root element.
 
-
-You can pass extra parameters to .reggirt (the same API as for .trigger())
+You can pass extra parameters to .reggirt (the same API as for ``.trigger()``)
 
 ```javascript
 $('.root').reggirt('.target', 'eventName', { answer: 42 });
 
 ```
 
-Inside your handlers, the event object gets some extra properties:
+``.reggirt()`` can trigger non-bubbling events directly on the current collection:
+just omit the first argument that specifies a target, and plugin will take care of the rest.
+Still you can pass extra data to your event:
+
+```javascript
+// this click will be triggered on all inputs but won't bubble back...
+$('input').reggirt('click');
+
+// ...neither will this, but extra data will be passed to every 'click' event handler:
+$('input').reggirt('click', {extra: 'data'});
+```
+
+### Extended Event API
+
+Inside event handlers, all event objects initiated by ``.reggirt()`` get some extra properties:
 
 ```javascript
 $('div').on('eventName', function(e) {
