@@ -18,10 +18,12 @@ With simplified syntax, you can also trigger event(s) directly on the current jQ
 
 Basic syntax is:
 
+```javascript
 $('some selector').reggirt(
     'target.selector',  // can also be a jQuery element collection, see below
     'eventName',
     {extra: 'event data object', optional: true});
+```
 
 Consider this example (DOM structure + JS code):
 
